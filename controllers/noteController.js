@@ -27,7 +27,6 @@ exports.createNote = async (req, res) => {
 }
 
 //Obtiene la agenda del usuario actual
-
 exports.getNote = async (req, res) => {
     try {
         const note = await Note.find({ driver: req.driver.id });
@@ -35,6 +34,17 @@ exports.getNote = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).send('Ups, an error occurred...');
+    }
+}
+
+//Obtener todas las notas
+exports.getNotes = async (req, res) => {
+    try {
+        const notes = await Note.find();
+        res.json({notes});
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Ups, an error ocurred...');
     }
 }
 
