@@ -3,11 +3,12 @@ const smtp = require('nodemailer-smtp-transport');
 
 let transporter = mailer.createTransport(
     smtp({
-        host: 'in-v3.mailjet.com',
-        port: 587,
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
         auth: {
-          user: process.env.MAILJET_API_KEY,
-          pass: process.env.MAILJET_API_SECRET,
+          user: 'cscgrupo2@gmail.com',
+          pass: 'Las4bestias',
         },
     })
 );
