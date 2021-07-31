@@ -18,7 +18,7 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/travel", require("./routes/travel"));
 app.use("/api/notes", require("./routes/notes"));
 app.use("/api/vehicle", require("./routes/vehicle"));
-app.use("/api/email", require("./routes/email"));
+// app.use("/api/email", require("./routes/email"));
 
 startCron();
 

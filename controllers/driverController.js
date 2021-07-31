@@ -1,4 +1,6 @@
 const Driver = require("../models/Driver");
+const Note = require("../models/Note");
+const Vehicle = require("../models/Vehicle");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
@@ -24,9 +26,18 @@ exports.createDriver = async (req, res) => {
 
     //Hasheo el password
     const salt = await bcrypt.genSalt(10);
-    (driver.password = await bcrypt.hash(password, salt)),
-      //guardo el conductor
-      await driver.save();
+    driver.password = await bcrypt.hash(password, salt);
+    //guardo el conductor
+    await driver.save();
+    //creo su vehiculo
+    const vehicle = new Vehicle();
+    vehicle.driver = driver.id;
+    await vehicle.save();
+
+    //le creo su agenda por default
+    const note = new Note();
+    note.driver = driver.id;
+    await note.save();
 
     //Creo el payload
     const payload = {

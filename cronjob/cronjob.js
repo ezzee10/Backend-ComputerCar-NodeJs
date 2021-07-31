@@ -31,58 +31,52 @@ const sendEmail = (email, title, body) => {
 };
 
 const startCron = () => {
-  cron.schedule("00 00 13 * * *", async () => {
+  cron.schedule("31 16 15 * * *", async () => {
     let dateNow = new Date();
 
     let notes = await obtenerNotas();
 
     notes.forEach((note) => {
-      let noteDateVTV = new Date(note.vtv);
 
-      let noteDateFireExtinguisher = new Date(note.fireExtinguisher);
+      if (note.vtv !== undefined) {
+        let noteDateVTV = new Date(note.vtv);
+        let diffVTV = diffDates(noteDateVTV, dateNow);
 
-      let diffVTV = diffDates(noteDateVTV, dateNow);
-
-      let diffFireExtinguisher = diffDates(noteDateFireExtinguisher, dateNow);
-
-      if (diffVTV === 30 || diffVTV === 1) {
-        console.log("entro aca");
-
-        let response =
-          diffVTV === 30
-            ? `Le recordamos que su VTV vencerá dentro de 30 días. La fecha estipulada es el ${convertDate(
-                noteDateVTV
-              )}`
-            : `Le recordamos que su VTV vence mañana. La fecha estipulada es el ${convertDate(
-                noteDateVTV
-              )}`;
-        console.log(response);
-        sendEmail(
-          "ezequiel.colombano@gmail.com",
-          "Información sobre turno VTV",
-          diffVTV === 30
-            ? `Le recordamos que su VTV vencerá dentro de 30 días. La fecha estipulada es el ${convertDate(
-                noteDateVTV
-              )}`
-            : `Le recordamos que su VTV vence mañana. La fecha estipulada es el ${convertDate(
-                noteDateVTV
-              )}`
-        );
+        if (diffVTV === 29 || diffVTV === 0) {
+          
+          sendEmail(
+            "cscgrupo2@gmail.com",
+            "Información sobre turno VTV",
+            diffVTV === 29
+              ? `Le recordamos que su VTV vencerá dentro de 30 días. La fecha estipulada es el ${convertDate(
+                  noteDateVTV
+                )}`
+              : `Le recordamos que su VTV vence mañana. La fecha estipulada es el ${convertDate(
+                  noteDateVTV
+                )}`
+          );
+        }
       }
 
-      if (diffFireExtinguisher === 30 || diffFireExtinguisher === 1) {
-        sendEmail(
-          "ezequiel.colombano@gmail.com",
-          "Información sobre su matafuego",
-          diffFireExtinguisher === 30
-            ? `Le recordamos que su matafuegos vencerá dentro de 30 días. La fecha estipulada es el ${convertDate(
-                noteDateFireExtinguisher
-              )}`
-            : `Le recordamos que su matafuegos vence mañana. La fecha estipulada es el ${convertDate(
-                noteDateFireExtinguisher
-              )}`
-        );
+      if(note.fireExtinguisher !== undefined) {
+        let noteDateFireExtinguisher = new Date(note.fireExtinguisher);
+        let diffFireExtinguisher = diffDates(noteDateFireExtinguisher, dateNow);
+
+        if (diffFireExtinguisher === 29 || diffFireExtinguisher === 0) {
+          sendEmail(
+            "cscgrupo2@gmail.com",
+            "Información sobre fecha vencimiento matafuego",
+            diffFireExtinguisher === 29
+              ? `Le recordamos que su matafuegos vencerá dentro de 30 días. La fecha estipulada es el ${convertDate(
+                  noteDateFireExtinguisher
+                )}`
+              : `Le recordamos que su matafuegos vence mañana. La fecha estipulada es el ${convertDate(
+                  noteDateFireExtinguisher
+                )}`
+          );
+        }
       }
+
     });
   });
 };

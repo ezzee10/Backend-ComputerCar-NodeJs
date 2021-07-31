@@ -15,8 +15,6 @@ exports.authDriver = async (req, res) => {
     //extraer el email y password
     const { email, password } = req.body;
 
-    console.log(password);
-
     try {
         //Revisar que sea un usuario registrado
         let driver = await Driver.findOne({ email });

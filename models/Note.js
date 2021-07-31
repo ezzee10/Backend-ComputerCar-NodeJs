@@ -11,9 +11,14 @@ const NoteSchema = mongoose.Schema({
         default: null,
         trim: true
     },
-    battery: {
-        type: String,
-        default: null,
+    rotation: {
+        type: Number,
+        default: 100000,
+        trim: true
+    },
+    transmission: {
+        type: Number,
+        default: 15000,
         trim: true
     },
     driver: {

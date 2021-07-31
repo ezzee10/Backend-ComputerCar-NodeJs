@@ -11,6 +11,7 @@ exports.createNote = async (req, res) => {
   try {
     //Crear una nueva agenda
     const note = new Note(req.body);
+    console.log(note);
 
     //Guardar el conductor via JWT
     note.driver = req.driver.id;

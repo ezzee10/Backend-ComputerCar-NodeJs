@@ -17,7 +17,7 @@ router.get('/',
     vehicleController.getVehicle
 )
 
-router.put('/',
+router.patch('/',
     auth,
     vehicleController.updateVehicle
 );
