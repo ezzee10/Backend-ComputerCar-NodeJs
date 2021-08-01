@@ -3,6 +3,7 @@ const Note = require("../models/Note");
 const transporter = require("../config/email");
 const convertDate = require("../helpers/convertDate");
 const diffDates = require("../helpers/diffDates");
+const { sendEmail } = require("../config/sendEmail");
 require("dotenv").config({ path: ".env" });
 
 const obtenerNotas = async () => {
@@ -13,21 +14,6 @@ const obtenerNotas = async () => {
     console.log(e);
   }
   return notes;
-};
-
-const sendEmail = (email, title, body) => {
-  const mailOptions = {
-    from: "cscgrupo2@gmail.com",
-    to: email,
-    subject: title,
-    html: body,
-  };
-
-  transporter.sendMail(mailOptions, (error, data) => {
-    if (error) {
-      console.log(error);
-    }
-  });
 };
 
 const startCron = () => {

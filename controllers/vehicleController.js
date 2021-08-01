@@ -1,5 +1,6 @@
 const Vehicle = require('../models/Vehicle');
 const { validationResult } = require('express-validator');
+const { sendEmail } = require('../config/sendEmail');
 
 exports.createVehicle = async (req, res) => {
 
@@ -60,6 +61,32 @@ exports.updateVehicle = async (req, res) => {
         vehicle = await Vehicle.findOneAndUpdate({ driver: req.driver.id }, { $set: req.body }, { new: false });
 
         res.json({ vehicle });
+
+        let updateRotationWheels = vehicle.kmsMissingUpdateRotationWheels - vehicle.kilometresTotal === 500  || vehicle.kmsMissingUpdateRotationWheels - vehicle.kilometresTotal === 0;
+
+        let updateTransmission = vehicle.kmsMissingUpdateTransmission - vehicle.kilometresTotal ===  500 || vehicle.kmsMissingUpdateTransmission - vehicle.kilometresTotal === 0;
+
+        if (updateRotationWheels) {
+            sendEmail(
+                "cscgrupo2@gmail.com",
+                "Información sobre rotación de cubiertas",
+                `<div>
+                    <p>${vehicle.kmsMissingUpdateRotationWheels - vehicle.kilometresTotal === 0 ? 'Le comunicamos que la cantidad de kilómetros establecida para la rotación de cubiertas se ha cumplido.' 
+                    : 'Le comunicamos que quedan 500 kilómetros para realizar la rotación de cubiertas'}</p>
+                </div>`
+            );
+        }
+
+        if (updateTransmission) {
+            sendEmail(
+                "cscgrupo2@gmail.com",
+                "Información sobre rotación de cubiertas",
+                `<div>
+                <p>${vehicle.kmsMissingUpdateTransmission - vehicle.kilometresTotal === 0 ? 'Le comunicamos que la cantidad de kilómetros establecida para el chequeo de transmisión se ha cumplido.' 
+                : 'Le comunicamos que quedan 500 kilómetros para realizar el chequeo de transmisión'}</p>
+                </div>`
+            );
+        }
 
     } catch (error) {
         console.log(error);

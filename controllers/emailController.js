@@ -1,27 +1,16 @@
-const transporter = require("../config/email");
+const { sendEmail } = require("../config/sendEmail");
 const convertDate = require("../helpers/convertDate");
-
-const sendEmail = (email, title, body) => {
-  const mailOptions = {
-    from: "cscgrupo2@gmail.com",
-    to: email,
-    subject: title,
-    html: body,
-  };
-
-  transporter.sendMail(mailOptions, (error, data) => {
-    if (error) {
-      console.log(error);
-    }
-  });
-};
+const Travel = require("../models/Travel");
 
 exports.sendEmail = async (req, res) => {
   let info = req.body;
-  console.log(info);
+
+  let last_travel = await Travel.find().sort({_id:-1}).limit(1);
+
+  info.travel = last_travel;
 
   sendEmail(
-    "ezequiel.colombano@gmail.com",
+    "cscgrupo2@gmail.com",
     "Información completa del usuario",
 
     `<div>
@@ -37,19 +26,26 @@ exports.sendEmail = async (req, res) => {
           new Date(info.note.vtv)
         )}</li>
       </ul>
-      <ul>
-        Último viaje realizado:
-        <br/>
-        <li>Lugar de origen: ${info.travel[0].originPlace}</li>
-        <li>Fecha y horario de origen: ${info.travel[0].dateOriginPlace}</li>
-        <li>Lugar de destino: ${info.travel[0].destinationPlace}</li>
-        <li>Fecha y horario de llegada: ${
-          info.travel[0].dateDestinationPlace
-        }</li>
-        <li>Kilómetros recorridos en el viaje: ${
-          info.travel[0].kilometresTravel
-        }</li>
-      </ul>
+      ${
+        info.travel[0] !== null ? `
+          <ul>
+          Último viaje realizado:
+          <br/>
+          <li>Lugar de origen: ${info.travel[0].originPlace}</li>
+          <li>Fecha y horario de origen: ${info.travel[0].dateOriginPlace}</li>
+          <li>Lugar de destino: ${info.travel[0].destinationPlace}</li>
+          <li>Fecha y horario de llegada: ${
+            info.travel[0].dateDestinationPlace
+          }</li>
+          <li>Kilómetros recorridos en el viaje: ${
+            info.travel[0].kilometresTravel
+          }</li>
+        </ul>
+        `
+        : ''
+      }
     </div>`
   );
+
+  res.status(200).json({ msg: 'Correo enviado correctamente' });
 };
