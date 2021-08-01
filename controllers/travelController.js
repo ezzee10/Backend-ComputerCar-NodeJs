@@ -13,6 +13,8 @@ exports.createTravel = async (req, res) => {
         //Crear un nuevo recorrido
         const travel = new Travel(req.body);
 
+        console.log(travel);
+
         //Guardar el conductor via JWT
         travel.driver = req.driver.id;
 
@@ -35,6 +37,16 @@ exports.getTravels = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).send('Ups, an error occurred...');
+    }
+}
+
+//eliminar recorridos de un usuario
+exports.deleteTravels = async (req, res) => {
+    try {
+        const travel = await Travel.remove({});
+        res.json({travel});
+    }catch (e) {
+        console.log(e);
     }
 }
 

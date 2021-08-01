@@ -25,11 +25,6 @@ router.get('/',
 //actualizar la agenda del usuario
 router.put('/',
     auth,
-    [
-        check('vtv', 'The vtv field is required').not().isEmpty(),
-        check('fireExtinguisher', 'The fireExtinguisher is required').not().isEmpty(),
-        check('battery', 'The battery field is required').not().isEmpty(),
-    ],
     notesController.updateNote
 )
 

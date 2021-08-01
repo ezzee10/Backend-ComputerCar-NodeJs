@@ -24,5 +24,9 @@ router.get('/',
     travelController.getTravels
 )
 
+router.delete('/',
+    travelController.deleteTravels
+)
+
 
 module.exports = router;
