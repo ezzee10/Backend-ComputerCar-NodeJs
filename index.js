@@ -11,7 +11,7 @@ conectarDB();
 
 app.use(express.json({ extended: true }));
 
-const port = process.env.port || 4000;
+const port = process.env.PORT || 4000;
 
 app.use("/api/driver", require("./routes/driver"));
 app.use("/api/auth", require("./routes/auth"));
