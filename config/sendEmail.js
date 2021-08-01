@@ -2,7 +2,7 @@ const transporter = require("./email");
 
 const sendEmail = (email, title, body) => {
     const mailOptions = {
-      from: "cscgrupo2@gmail.com",
+      from: process.env.EMAIL,
       to: email,
       subject: title,
       html: body,

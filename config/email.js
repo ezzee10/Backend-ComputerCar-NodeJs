@@ -7,7 +7,7 @@ let transporter = mailer.createTransport(
     port: 465,
     secure: true,
     auth: {
-      user: "cscgrupo2@gmail.com",
+      user: process.env.EMAIL,
       pass: "Las4bestias",
     },
   })

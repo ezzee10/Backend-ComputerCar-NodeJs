@@ -50,15 +50,14 @@ exports.updateVehicle = async (req, res) => {
     try {
 
         //revisar si existe el vehiculo
-        let vehicle = await Vehicle.find({ driver: req.driver.id });
+        let vehicle = await Vehicle.findOneAndUpdate({ driver: req.driver.id }, { $set: req.body }, { new: false }).populate('driver');
+        
+        // await Vehicle.find({ driver: req.driver.id }).populate("driver");
 
         //si el vehiculo no existe
         if (!vehicle) {
             return res.status(404).json({ msg: 'vehicle not found' });
         }
-
-        //actualizar
-        vehicle = await Vehicle.findOneAndUpdate({ driver: req.driver.id }, { $set: req.body }, { new: false });
 
         res.json({ vehicle });
 
@@ -68,7 +67,7 @@ exports.updateVehicle = async (req, res) => {
 
         if (updateRotationWheels) {
             sendEmail(
-                "cscgrupo2@gmail.com",
+                vehicle.driver.email,
                 "Información sobre rotación de cubiertas",
                 `<div>
                     <p>${vehicle.kmsMissingUpdateRotationWheels - vehicle.kilometresTotal === 0 ? 'Le comunicamos que la cantidad de kilómetros establecida para la rotación de cubiertas se ha cumplido.' 
@@ -79,7 +78,7 @@ exports.updateVehicle = async (req, res) => {
 
         if (updateTransmission) {
             sendEmail(
-                "cscgrupo2@gmail.com",
+                vehicle.driver.email,
                 "Información sobre rotación de cubiertas",
                 `<div>
                 <p>${vehicle.kmsMissingUpdateTransmission - vehicle.kilometresTotal === 0 ? 'Le comunicamos que la cantidad de kilómetros establecida para el chequeo de transmisión se ha cumplido.' 

@@ -17,7 +17,7 @@ const obtenerNotas = async () => {
 };
 
 const startCron = () => {
-  cron.schedule("31 16 15 * * *", async () => {
+  cron.schedule("00 00 19 * * *", async () => {
     let dateNow = new Date();
 
     let notes = await obtenerNotas();
@@ -31,7 +31,7 @@ const startCron = () => {
         if (diffVTV === 29 || diffVTV === 0) {
           
           sendEmail(
-            "cscgrupo2@gmail.com",
+            note.driver.email,
             "Información sobre turno VTV",
             diffVTV === 29
               ? `Le recordamos que su VTV vencerá dentro de 30 días. La fecha estipulada es el ${convertDate(
@@ -50,7 +50,7 @@ const startCron = () => {
 
         if (diffFireExtinguisher === 29 || diffFireExtinguisher === 0) {
           sendEmail(
-            "cscgrupo2@gmail.com",
+            note.driver.email,
             "Información sobre fecha vencimiento matafuego",
             diffFireExtinguisher === 29
               ? `Le recordamos que su matafuegos vencerá dentro de 30 días. La fecha estipulada es el ${convertDate(

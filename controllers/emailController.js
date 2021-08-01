@@ -10,7 +10,7 @@ exports.sendEmail = async (req, res) => {
   info.travel = last_travel;
 
   sendEmail(
-    "cscgrupo2@gmail.com",
+    info.email,
     "Información completa del usuario",
 
     `<div>
