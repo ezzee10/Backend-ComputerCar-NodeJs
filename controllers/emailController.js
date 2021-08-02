@@ -5,7 +5,7 @@ const Travel = require("../models/Travel");
 exports.sendEmail = async (req, res) => {
   let info = req.body;
 
-  let last_travel = await Travel.find().sort({_id:-1}).limit(1);
+  let last_travel = await Travel.find({ driver: req.driver.id }).sort({_id:-1}).limit(1);
 
   info.travel = last_travel;
 

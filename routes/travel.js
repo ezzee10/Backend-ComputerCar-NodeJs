@@ -25,6 +25,7 @@ router.get('/',
 )
 
 router.delete('/',
+    auth,
     travelController.deleteTravels
 )
 
