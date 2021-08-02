@@ -8,7 +8,7 @@ let transporter = mailer.createTransport(
     secure: true,
     auth: {
       user: process.env.EMAIL,
-      pass: "Las4bestias",
+      pass: process.env.PASSWORD_EMAIL,
     },
   })
 );
